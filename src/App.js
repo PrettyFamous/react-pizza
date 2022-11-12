@@ -4,6 +4,8 @@ import Categories from "./components/Categories";
 import PizzaBlock from "./components/PizzaBlock";
 import Pagination from "./components/Pagination";
 
+import pizzas from "./assets/pizzas.json";
+
 import "./scss/app.scss";
 
 function App() {
@@ -18,10 +20,9 @@ function App() {
           </div>
           <h2 className="content__title">Все пиццы</h2>
           <div className="content__items">
-            <PizzaBlock title={"Маргарита"} price={450} />
-            <PizzaBlock title={"Мексиканская"} price={550} />
-            <PizzaBlock title={"Сырная"} price={400} />
-            <PizzaBlock title={"Карбонара"} price={450} />
+            {pizzas.map((obj) => (
+              <PizzaBlock {...obj} />
+            ))}
           </div>
           <Pagination />
         </div>
