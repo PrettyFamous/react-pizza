@@ -8,10 +8,18 @@
 
     svg {
       margin-right: 8px;
+
+      &:hover {
+        cursor: pointer;
+      }
     }
 
     b {
       margin-right: 8px;
+
+      &:hover {
+        cursor: pointer;
+      }
     }
 
     span {
