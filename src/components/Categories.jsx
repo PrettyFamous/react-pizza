@@ -1,4 +1,4 @@
-const Categories = ({ value, onChangeCategory }) => {
+const Categories = ({ value, setCategoryId, setCurrentPage }) => {
   const categories = [
     "Все",
     "Мясные",
@@ -7,6 +7,11 @@ const Categories = ({ value, onChangeCategory }) => {
     "Острые",
     "Закрытые",
   ];
+
+  const onChangeCategory = (index) => {
+    setCategoryId(index);
+    setCurrentPage(1);
+  };
 
   return (
     <div className="categories">
