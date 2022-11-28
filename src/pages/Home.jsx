@@ -19,6 +19,7 @@ const Home = () => {
     sortProperty: "rating",
   });
   const { searchValue } = useContext(SearchContext);
+  const itemsPerPage = 4;
 
   useEffect(() => {
     setIsLoading(true);
@@ -29,7 +30,7 @@ const Home = () => {
     const search = searchValue ? "&search=" + searchValue : "";
 
     fetch(
-      `https://637e0893cfdbfd9a63a4e9c0.mockapi.io/items?page=${currentPage}&limit=8&sortBy=${sortBy}&order=${order}${category}${search}`
+      `https://637e0893cfdbfd9a63a4e9c0.mockapi.io/items?page=${currentPage}&limit=${itemsPerPage}&sortBy=${sortBy}&order=${order}${category}${search}`
     )
       .then((response) => response.json())
       .then((arr) => {
@@ -62,7 +63,11 @@ const Home = () => {
           ? [...new Array(6)].map((_, index) => <Skeleton key={index} />)
           : items.map((item) => <PizzaBlock key={item.id} {...item} />)}
       </div>
-      <Pagination onChangePage={setCurrentPage} itemCount={itemCount} />
+      <Pagination
+        onChangePage={setCurrentPage}
+        itemCount={itemCount}
+        itemsPerPage={itemsPerPage}
+      />
     </div>
   );
 };
