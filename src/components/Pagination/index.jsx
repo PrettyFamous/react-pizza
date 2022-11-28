@@ -3,7 +3,6 @@ import ReactPaginate from "react-paginate";
 import styles from "./Pagination.module.scss";
 
 const Pagination = ({ onChangePage, itemCount }) => {
-  console.log("count" + itemCount);
   return (
     <ReactPaginate
       className={styles.root}
