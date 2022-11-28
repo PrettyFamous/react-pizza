@@ -1,5 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import { SearchContext } from "../App";
+import { useSelector, useDispatch } from "react-redux";
+import { setCategoryId } from "../redux/slices/filterSlice";
 
 import Sort from "../components/Sort";
 import Categories from "../components/Categories";
@@ -8,29 +10,26 @@ import PizzaBlock from "../components/PizzaBlock";
 import Pagination from "../components/Pagination";
 
 const Home = () => {
+  const dispatch = useDispatch();
+  const { categoryId, sort, orderDesc } = useSelector((state) => state.filter);
+
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const [categoryId, setCategoryId] = useState(0);
-  const [orderDesc, setOrderDesc] = useState(false);
-  const [itemCount, setItemCount] = useState(0);
-  const [sortType, setSortType] = useState({
-    name: "популярности",
-    sortProperty: "rating",
-  });
-  const { searchValue } = useContext(SearchContext);
   const itemsPerPage = 4;
+  const [itemCount, setItemCount] = useState(0);
+  const { searchValue } = useContext(SearchContext);
 
   useEffect(() => {
     setIsLoading(true);
 
-    const sortBy = sortType.sortProperty;
+    const sortType = sort.sortProperty;
     const order = orderDesc ? "desc" : "asc";
     const category = categoryId > 0 ? "&category=" + categoryId : "";
     const search = searchValue ? "&search=" + searchValue : "";
 
     fetch(
-      `https://637e0893cfdbfd9a63a4e9c0.mockapi.io/items?page=${currentPage}&limit=${itemsPerPage}&sortBy=${sortBy}&order=${order}${category}${search}`
+      `https://637e0893cfdbfd9a63a4e9c0.mockapi.io/items?page=${currentPage}&limit=${itemsPerPage}&sortBy=${sortType}&order=${order}${category}${search}`
     )
       .then((response) => response.json())
       .then((arr) => {
@@ -40,22 +39,17 @@ const Home = () => {
       });
 
     window.scrollTo(0, 0);
-  }, [currentPage, sortType, orderDesc, categoryId, searchValue]);
+  }, [currentPage, sort, orderDesc, categoryId, searchValue]);
 
   return (
     <div className="container">
       <div className="content__top">
         <Categories
           value={categoryId}
-          setCategoryId={setCategoryId}
+          setCategoryId={(id) => dispatch(setCategoryId(id))}
           setCurrentPage={setCurrentPage}
         />
-        <Sort
-          value={sortType}
-          onChangeSort={setSortType}
-          orderDesc={orderDesc}
-          setOrderDesc={setOrderDesc}
-        />
+        <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">
