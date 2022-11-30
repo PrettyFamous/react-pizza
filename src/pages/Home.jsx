@@ -20,8 +20,6 @@ const Home = () => {
     searchValue,
   } = useSelector((state) => state.filter);
 
-  console.log(searchValue);
-
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
