@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import { SearchContext } from "../App";
 import { useSelector, useDispatch } from "react-redux";
-import { setCategoryId } from "../redux/slices/filterSlice";
+import { setItemsCount } from "../redux/slices/filterSlice";
 import axios from "axios";
 
 import Sort from "../components/Sort";
@@ -12,13 +12,11 @@ import Pagination from "../components/Pagination";
 
 const Home = () => {
   const dispatch = useDispatch();
-  const { categoryId, sort, orderDesc } = useSelector((state) => state.filter);
+  const { categoryId, sort, orderDesc, itemsPerPage, currentPage } =
+    useSelector((state) => state.filter);
 
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 4;
-  const [itemCount, setItemCount] = useState(0);
   const { searchValue } = useContext(SearchContext);
 
   useEffect(() => {
@@ -35,7 +33,7 @@ const Home = () => {
       )
       .then((res) => {
         setItems(res.data.items);
-        setItemCount(res.data.count);
+        dispatch(setItemsCount(res.data.count));
         setIsLoading(false);
       });
 
@@ -45,11 +43,7 @@ const Home = () => {
   return (
     <div className="container">
       <div className="content__top">
-        <Categories
-          value={categoryId}
-          setCategoryId={(id) => dispatch(setCategoryId(id))}
-          setCurrentPage={setCurrentPage}
-        />
+        <Categories />
         <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
@@ -58,11 +52,7 @@ const Home = () => {
           ? [...new Array(6)].map((_, index) => <Skeleton key={index} />)
           : items.map((item) => <PizzaBlock key={item.id} {...item} />)}
       </div>
-      <Pagination
-        onChangePage={setCurrentPage}
-        itemCount={itemCount}
-        itemsPerPage={itemsPerPage}
-      />
+      <Pagination />
     </div>
   );
 };
