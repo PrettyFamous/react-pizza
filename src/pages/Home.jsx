@@ -1,7 +1,6 @@
-import { useEffect, useState, useContext } from "react";
-import { SearchContext } from "../App";
-import { useSelector, useDispatch } from "react-redux";
 import { setItemsCount } from "../redux/slices/filterSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 import Sort from "../components/Sort";
@@ -12,12 +11,19 @@ import Pagination from "../components/Pagination";
 
 const Home = () => {
   const dispatch = useDispatch();
-  const { categoryId, sort, orderDesc, itemsPerPage, currentPage } =
-    useSelector((state) => state.filter);
+  const {
+    categoryId,
+    sort,
+    orderDesc,
+    itemsPerPage,
+    currentPage,
+    searchValue,
+  } = useSelector((state) => state.filter);
+
+  console.log(searchValue);
 
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { searchValue } = useContext(SearchContext);
 
   useEffect(() => {
     setIsLoading(true);
