@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useEffect, useState, useContext } from "react";
 import { SearchContext } from "../App";
 import { useSelector, useDispatch } from "react-redux";
@@ -28,13 +29,13 @@ const Home = () => {
     const category = categoryId > 0 ? "&category=" + categoryId : "";
     const search = searchValue ? "&search=" + searchValue : "";
 
-    fetch(
-      `https://637e0893cfdbfd9a63a4e9c0.mockapi.io/items?page=${currentPage}&limit=${itemsPerPage}&sortBy=${sortType}&order=${order}${category}${search}`
-    )
-      .then((response) => response.json())
-      .then((arr) => {
-        setItems(arr.items);
-        setItemCount(arr.count);
+    axios
+      .get(
+        `https://637e0893cfdbfd9a63a4e9c0.mockapi.io/items?page=${currentPage}&limit=${itemsPerPage}&sortBy=${sortType}&order=${order}${category}${search}`
+      )
+      .then((res) => {
+        setItems(res.data.items);
+        setItemCount(res.data.count);
         setIsLoading(false);
       });
 
