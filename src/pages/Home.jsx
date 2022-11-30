@@ -1,48 +1,83 @@
-import { setItemsCount } from "../redux/slices/filterSlice";
+import { setItemsCount, setFilters } from "../redux/slices/filterSlice";
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
+import qs from "qs";
 
-import Sort from "../components/Sort";
-import Categories from "../components/Categories";
+import Sort, { sortList } from "../components/Sort";
+import Categories, { categoriesList } from "../components/Categories";
 import Skeleton from "../components/PizzaBlock/Skeleton";
 import PizzaBlock from "../components/PizzaBlock";
 import Pagination from "../components/Pagination";
 
 const Home = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const {
-    categoryId,
-    sort,
-    orderDesc,
-    itemsPerPage,
-    currentPage,
-    searchValue,
-  } = useSelector((state) => state.filter);
+  const isSearch = useRef(false);
+  const isMounted = useRef(false);
+  const { categoryId, sort, order, itemsPerPage, currentPage, searchValue } =
+    useSelector((state) => state.filter);
 
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [querryString, setQuerryString] = useState("");
 
-  useEffect(() => {
+  const fetchPizzas = () => {
     setIsLoading(true);
-
-    const sortType = sort.sortProperty;
-    const order = orderDesc ? "desc" : "asc";
-    const category = categoryId > 0 ? "&category=" + categoryId : "";
-    const search = searchValue ? "&search=" + searchValue : "";
-
     axios
-      .get(
-        `https://637e0893cfdbfd9a63a4e9c0.mockapi.io/items?page=${currentPage}&limit=${itemsPerPage}&sortBy=${sortType}&order=${order}${category}${search}`
-      )
+      .get(`https://637e0893cfdbfd9a63a4e9c0.mockapi.io/items${querryString}`)
       .then((res) => {
         setItems(res.data.items);
         dispatch(setItemsCount(res.data.count));
         setIsLoading(false);
       });
+  };
 
+  useEffect(() => {
+    if (isMounted.current) {
+      const querryObject = {
+        page: currentPage,
+        limit: itemsPerPage,
+        sortBy: sort.sortProperty,
+        order,
+      };
+
+      if (categoryId > 0) {
+        querryObject["category"] = categoryId;
+      }
+
+      if (searchValue) {
+        querryObject["search"] = searchValue;
+      }
+
+      const querry = `?${qs.stringify(querryObject)}`;
+      setQuerryString(querry);
+      navigate(querry);
+    }
+
+    isMounted.current = true;
+  }, [currentPage, itemsPerPage, sort, order, categoryId, searchValue]);
+
+  useEffect(() => {
+    if (window.location.search) {
+      const params = qs.parse(window.location.search.substring(1));
+      const sort = sortList.find((item) => item.sortProperty === params.sortBy);
+
+      dispatch(setFilters({ ...params, sort }));
+      isSearch.current = true;
+    }
+  }, []);
+
+  useEffect(() => {
     window.scrollTo(0, 0);
-  }, [currentPage, sort, orderDesc, categoryId, searchValue]);
+
+    if (!isSearch.current) {
+      fetchPizzas();
+    }
+
+    isSearch.current = false;
+  }, [querryString]);
 
   return (
     <div className="container">
@@ -50,7 +85,7 @@ const Home = () => {
         <Categories />
         <Sort />
       </div>
-      <h2 className="content__title">Все пиццы</h2>
+      <h2 className="content__title">{categoriesList[categoryId]} пиццы</h2>
       <div className="content__items">
         {isLoading
           ? [...new Array(6)].map((_, index) => <Skeleton key={index} />)

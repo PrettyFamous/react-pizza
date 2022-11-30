@@ -1,17 +1,18 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setSort, setOrderDesc } from "../redux/slices/filterSlice";
+import { setSort, setOrder } from "../redux/slices/filterSlice";
 
-const Sort = () => {
+export const sortList = [
+  { name: "популярности", sortProperty: "rating" },
+  { name: "цене", sortProperty: "price" },
+  { name: "алфавиту", sortProperty: "title" },
+];
+
+export const Sort = () => {
   const dispatch = useDispatch();
-  const { sort, orderDesc } = useSelector((state) => state.filter);
+  const { sort, order } = useSelector((state) => state.filter);
 
   const [isVisible, setIsVisible] = useState(false);
-  const list = [
-    { name: "популярности", sortProperty: "rating" },
-    { name: "цене", sortProperty: "price" },
-    { name: "алфавиту", sortProperty: "title" },
-  ];
 
   const onClickListItem = (item) => {
     dispatch(setSort(item));
@@ -21,9 +22,9 @@ const Sort = () => {
   return (
     <div className="sort">
       <div className="sort__label">
-        {orderDesc ? (
+        {order === "desc" ? (
           <svg
-            onClick={() => dispatch(setOrderDesc(!orderDesc))}
+            onClick={() => dispatch(setOrder("acs"))}
             width="10"
             height="6"
             viewBox="0 0 10 6"
@@ -37,7 +38,7 @@ const Sort = () => {
           </svg>
         ) : (
           <svg
-            onClick={() => dispatch(setOrderDesc(!orderDesc))}
+            onClick={() => dispatch(setOrder("desc"))}
             width="10"
             height="6"
             viewBox="0 0 10 6"
@@ -51,13 +52,17 @@ const Sort = () => {
           </svg>
         )}
 
-        <b onClick={() => dispatch(setOrderDesc(!orderDesc))}>Сортировка по:</b>
+        <b
+          onClick={() => dispatch(setOrder(order === "desc" ? "asc" : "desc"))}
+        >
+          Сортировка по:
+        </b>
         <span onClick={() => setIsVisible(!isVisible)}>{sort.name}</span>
       </div>
       {isVisible && (
         <div className="sort__popup">
           <ul>
-            {list.map((item, index) => (
+            {sortList.map((item, index) => (
               <li
                 key={index}
                 onClick={() => onClickListItem(item)}

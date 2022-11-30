@@ -1,14 +1,21 @@
+import { setCurrentPage } from "../redux/slices/filterSlice";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
 import logoSvg from "../assets/img/pizza-logo.svg";
 import Search from "./Search";
 
 const Header = () => {
+  const dispatch = useDispatch();
+
   return (
     <div className="header">
       <div className="container">
         <Link to="/">
-          <div className="header__logo">
+          <div
+            className="header__logo"
+            onClick={() => dispatch(setCurrentPage(1))}
+          >
             <img width="38" src={logoSvg} alt="Pizza logo" />
             <div>
               <h1>React Pizza</h1>
