@@ -81,7 +81,7 @@ const PizzaBlock = ({ id, title, price, imageUrl, sizes, types }) => {
               ></path>
             </svg>
             <span>Добавить</span>
-            {countInCart && <i>{countInCart}</i>}
+            {countInCart > 0 && <i>{countInCart}</i>}
           </button>
         </div>
       </div>
