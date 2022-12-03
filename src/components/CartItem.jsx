@@ -1,5 +1,5 @@
-import { useDispatch } from "react-redux";
 import { addItem, decItem, removeItem } from "../redux/slices/cartSlice";
+import { useDispatch } from "react-redux";
 
 const sizes = [26, 30, 40];
 
