@@ -5,7 +5,7 @@
     "title": "Пепперони Фреш с перцем",
     "types": [0, 1],
     "sizes": [26, 30, 40],
-    "price": 803,
+    "price": 403,
     "category": 3,
     "rating": 4
   },
@@ -65,7 +65,7 @@
     "title": "Пепперони",
     "types": [0, 1],
     "sizes": [26, 30, 40],
-    "price": 675,
+    "price": 475,
     "category": 1,
     "rating": 9
   },
@@ -105,7 +105,7 @@
     "title": "Пепперони Фреш с перцем",
     "types": [0, 1],
     "sizes": [26, 30, 40],
-    "price": 803,
+    "price": 403,
     "category": 3,
     "rating": 4
   },
@@ -165,7 +165,7 @@
     "title": "Пепперони",
     "types": [0, 1],
     "sizes": [26, 30, 40],
-    "price": 675,
+    "price": 475,
     "category": 1,
     "rating": 9
   },

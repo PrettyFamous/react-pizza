@@ -29,6 +29,7 @@ const Home = () => {
       .get(`https://637e0893cfdbfd9a63a4e9c0.mockapi.io/items${querryString}`)
       .then((res) => {
         setItems(res.data.items);
+
         dispatch(setItemsCount(res.data.count));
         setIsLoading(false);
       });
@@ -39,6 +40,7 @@ const Home = () => {
       const querryObject = {
         page: currentPage,
         limit: itemsPerPage,
+
         sortBy: sort.sortProperty,
         order,
       };
@@ -63,7 +65,6 @@ const Home = () => {
     if (window.location.search) {
       const params = qs.parse(window.location.search.substring(1));
       const sort = sortList.find((item) => item.sortProperty === params.sortBy);
-
       dispatch(setFilters({ ...params, sort }));
       isSearch.current = true;
     }
@@ -88,7 +89,7 @@ const Home = () => {
       <h2 className="content__title">{categoriesList[categoryId]} пиццы</h2>
       <div className="content__items">
         {isLoading
-          ? [...new Array(6)].map((_, index) => <Skeleton key={index} />)
+          ? [...new Array(4)].map((_, index) => <Skeleton key={index} />)
           : items.map((item) => <PizzaBlock key={item.id} {...item} />)}
       </div>
       <Pagination />

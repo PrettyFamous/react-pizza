@@ -1,5 +1,5 @@
 import { setCurrentPage } from "../redux/slices/filterSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import logoSvg from "../assets/img/pizza-logo.svg";
@@ -7,6 +7,7 @@ import Search from "./Search";
 
 const Header = () => {
   const dispatch = useDispatch();
+  const { totalCount, totalPrice } = useSelector((state) => state.cart);
 
   return (
     <div className="header">
@@ -26,7 +27,7 @@ const Header = () => {
         <Search />
         <div className="header__cart">
           <Link to="/cart" className="button button--cart">
-            <span>0 ₽</span>
+            <span>{totalPrice} ₽</span>
             <div className="button__delimiter"></div>
             <svg
               width="18"
@@ -57,7 +58,7 @@ const Header = () => {
                 strokeLinejoin="round"
               ></path>
             </svg>
-            <span>0</span>
+            <span>{totalCount}</span>
           </Link>
         </div>
       </div>

@@ -36,7 +36,6 @@ const filterSlice = createSlice({
       state.searchValue = action.payload;
     },
     setFilters(state, action) {
-      console.log(action.payload);
       state.currentPage = action.payload.page;
       state.itemsPerPage = action.payload.limit;
       state.sort = action.payload.sort;
