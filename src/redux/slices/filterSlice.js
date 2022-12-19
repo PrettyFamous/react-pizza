@@ -7,7 +7,6 @@ const initialState = {
     sortProperty: "rating",
   },
   order: "asc",
-  itemsCount: 0,
   itemsPerPage: 4,
   currentPage: 1,
   searchValue: "",
@@ -25,9 +24,6 @@ const filterSlice = createSlice({
     },
     setOrder(state, action) {
       state.order = action.payload;
-    },
-    setItemsCount(state, action) {
-      state.itemsCount = action.payload;
     },
     setCurrentPage(state, action) {
       state.currentPage = action.payload;
@@ -56,7 +52,6 @@ export const {
   setCategoryId,
   setSort,
   setOrder,
-  setItemsCount,
   setCurrentPage,
   setSearchValue,
   setFilters,

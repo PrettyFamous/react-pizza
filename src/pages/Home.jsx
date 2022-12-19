@@ -1,8 +1,8 @@
-import { setItemsCount, setFilters } from "../redux/slices/filterSlice";
+import { setFilters } from "../redux/slices/filterSlice";
+import { fetchPizzas } from "../redux/slices/pizzaSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-import axios from "axios";
 import qs from "qs";
 
 import Sort, { sortList } from "../components/Sort";
@@ -16,24 +16,11 @@ const Home = () => {
   const dispatch = useDispatch();
   const isSearch = useRef(false);
   const isMounted = useRef(false);
+  const { items, status } = useSelector((state) => state.pizza);
   const { categoryId, sort, order, itemsPerPage, currentPage, searchValue } =
     useSelector((state) => state.filter);
 
-  const [items, setItems] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [querryString, setQuerryString] = useState("");
-
-  const fetchPizzas = () => {
-    setIsLoading(true);
-    axios
-      .get(`https://637e0893cfdbfd9a63a4e9c0.mockapi.io/items${querryString}`)
-      .then((res) => {
-        setItems(res.data.items);
-
-        dispatch(setItemsCount(res.data.count));
-        setIsLoading(false);
-      });
-  };
 
   useEffect(() => {
     if (isMounted.current) {
@@ -74,11 +61,16 @@ const Home = () => {
     window.scrollTo(0, 0);
 
     if (!isSearch.current) {
-      fetchPizzas();
+      dispatch(fetchPizzas(querryString));
     }
 
     isSearch.current = false;
   }, [querryString]);
+
+  const pizzas = items.map((item) => <PizzaBlock key={item.id} {...item} />);
+  const skeletons = [...new Array(4)].map((_, index) => (
+    <Skeleton key={index} />
+  ));
 
   return (
     <div className="container">
@@ -87,11 +79,19 @@ const Home = () => {
         <Sort />
       </div>
       <h2 className="content__title">{categoriesList[categoryId]} пиццы</h2>
-      <div className="content__items">
-        {isLoading
-          ? [...new Array(4)].map((_, index) => <Skeleton key={index} />)
-          : items.map((item) => <PizzaBlock key={item.id} {...item} />)}
-      </div>
+      {status === "error" ? (
+        <div className="content__error-info">
+          <h2>Произошла ошибка 😒</h2>
+          <p>
+            К сожалению, пиццы получить не удалось. <br /> Попробуйте повторить
+            попытку позже.
+          </p>
+        </div>
+      ) : (
+        <div className="content__items">
+          {status === "loading" ? skeletons : pizzas}
+        </div>
+      )}
       <Pagination />
     </div>
   );
