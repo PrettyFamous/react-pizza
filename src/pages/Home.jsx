@@ -1,5 +1,5 @@
-import { setFilters } from "../redux/slices/filterSlice";
-import { fetchPizzas } from "../redux/slices/pizzaSlice";
+import { selectFilter, setFilters } from "../redux/slices/filterSlice";
+import { fetchPizzas, selectPizza } from "../redux/slices/pizzaSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
@@ -16,9 +16,9 @@ const Home = () => {
   const dispatch = useDispatch();
   const isSearch = useRef(false);
   const isMounted = useRef(false);
-  const { items, status } = useSelector((state) => state.pizza);
+  const { items, status } = useSelector(selectPizza);
   const { categoryId, sort, order, itemsPerPage, currentPage, searchValue } =
-    useSelector((state) => state.filter);
+    useSelector(selectFilter);
 
   const [querryString, setQuerryString] = useState("");
 
