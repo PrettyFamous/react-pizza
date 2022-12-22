@@ -7,7 +7,7 @@ const initialState = {
     sortProperty: "rating",
   },
   order: "asc",
-  itemsPerPage: 4,
+  itemsPerPage: 8,
   currentPage: 1,
   searchValue: "",
 };

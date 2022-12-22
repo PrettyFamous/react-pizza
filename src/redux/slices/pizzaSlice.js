@@ -3,7 +3,7 @@ import axios from "axios";
 
 export const fetchPizzas = createAsyncThunk(
   "pizza/fetchPizzasStatus",
-  async (querryString, thunkAPI) => {
+  async (querryString) => {
     const { data } = await axios.get(
       `https://637e0893cfdbfd9a63a4e9c0.mockapi.io/items${querryString}`
     );

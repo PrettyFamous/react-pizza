@@ -1,6 +1,6 @@
 import { setCurrentPage } from "../redux/slices/filterSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import logoSvg from "../assets/img/pizza-logo.svg";
 import Search from "./Search";
@@ -9,6 +9,7 @@ import { selectCart } from "../redux/slices/cartSlice";
 const Header = () => {
   const dispatch = useDispatch();
   const { totalCount, totalPrice } = useSelector(selectCart);
+  const location = useLocation();
 
   return (
     <div className="header">
@@ -25,7 +26,7 @@ const Header = () => {
             </div>
           </div>
         </Link>
-        <Search />
+        {location.pathname != "/cart" && <Search />}
         <div className="header__cart">
           <Link to="/cart" className="button button--cart">
             <span>{totalPrice} ₽</span>

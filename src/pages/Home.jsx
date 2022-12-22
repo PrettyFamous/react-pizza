@@ -14,8 +14,6 @@ import Pagination from "../components/Pagination";
 const Home = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const isSearch = useRef(false);
-  const isMounted = useRef(false);
   const { items, status } = useSelector(selectPizza);
   const { categoryId, sort, order, itemsPerPage, currentPage, searchValue } =
     useSelector(selectFilter);
@@ -23,48 +21,41 @@ const Home = () => {
   const [querryString, setQuerryString] = useState("");
 
   useEffect(() => {
-    if (isMounted.current) {
-      const querryObject = {
-        page: currentPage,
-        limit: itemsPerPage,
-
-        sortBy: sort.sortProperty,
-        order,
-      };
-
-      if (categoryId > 0) {
-        querryObject["category"] = categoryId;
-      }
-
-      if (searchValue) {
-        querryObject["search"] = searchValue;
-      }
-
-      const querry = `?${qs.stringify(querryObject)}`;
-      setQuerryString(querry);
-      navigate(querry);
-    }
-
-    isMounted.current = true;
-  }, [currentPage, itemsPerPage, sort, order, categoryId, searchValue]);
-
-  useEffect(() => {
     if (window.location.search) {
       const params = qs.parse(window.location.search.substring(1));
       const sort = sortList.find((item) => item.sortProperty === params.sortBy);
       dispatch(setFilters({ ...params, sort }));
-      isSearch.current = true;
     }
   }, []);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    const querryObject = {
+      page: currentPage,
+      limit: itemsPerPage,
 
-    if (!isSearch.current) {
-      dispatch(fetchPizzas(querryString));
+      sortBy: sort.sortProperty,
+      order,
+    };
+
+    if (categoryId > 0) {
+      querryObject["category"] = categoryId;
     }
 
-    isSearch.current = false;
+    if (searchValue) {
+      querryObject["search"] = searchValue;
+    }
+
+    const querry = `?${qs.stringify(querryObject)}`;
+    setQuerryString(querry);
+    navigate(querry);
+  }, [currentPage, itemsPerPage, sort, order, categoryId, searchValue]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+
+    if (querryString) {
+      dispatch(fetchPizzas(querryString));
+    }
   }, [querryString]);
 
   const pizzas = items.map((item) => <PizzaBlock key={item.id} {...item} />);
