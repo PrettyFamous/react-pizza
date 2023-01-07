@@ -6,19 +6,20 @@ import debounce from "lodash.debounce";
 
 import styles from "./Search.module.scss";
 
-const Search = () => {
+const Search: React.FC = () => {
   const dispatch = useDispatch();
   const [value, setValue] = useState("");
-  const inputRef = useRef();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const updateSearchValue = useCallback(
-    debounce((value) => {
+    debounce((value: string) => {
       dispatch(setSearchValue(value));
     }, 500),
     []
   );
 
-  const OnChangeInput = (event) => {
+  // @TODO сдлеать нормлаьный тип
+  const OnChangeInput = (event: any) => {
     setValue(event.target.value);
     updateSearchValue(event.target.value);
   };
@@ -26,7 +27,8 @@ const Search = () => {
   const OnClear = () => {
     setValue("");
     dispatch(setSearchValue(""));
-    inputRef.current.focus();
+
+    inputRef.current?.focus();
   };
 
   return (
@@ -74,7 +76,7 @@ const Search = () => {
       />
       {value && (
         <svg
-          onClick={() => OnClear("")}
+          onClick={() => OnClear()}
           className={styles.clear}
           viewBox="0 0 20 20"
           xmlns="http://www.w3.org/2000/svg"

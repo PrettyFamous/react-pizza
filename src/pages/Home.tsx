@@ -11,7 +11,7 @@ import Skeleton from "../components/PizzaBlock/Skeleton";
 import PizzaBlock from "../components/PizzaBlock";
 import Pagination from "../components/Pagination";
 
-const Home = () => {
+const Home: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { items, status } = useSelector(selectPizza);
@@ -32,9 +32,10 @@ const Home = () => {
     const querryObject = {
       page: currentPage,
       limit: itemsPerPage,
-
       sortBy: sort.sortProperty,
       order,
+      category: null,
+      search: null,
     };
 
     if (categoryId > 0) {
@@ -54,11 +55,15 @@ const Home = () => {
     window.scrollTo(0, 0);
 
     if (querryString) {
+      // @ts-ignore
       dispatch(fetchPizzas(querryString));
     }
   }, [querryString]);
 
-  const pizzas = items.map((item) => <PizzaBlock key={item.id} {...item} />);
+  // @TODO Поменять тип с any на нормальный
+  const pizzas = items.map((item: any) => (
+    <PizzaBlock key={item.id} {...item} />
+  ));
   const skeletons = [...new Array(4)].map((_, index) => (
     <Skeleton key={index} />
   ));

@@ -4,7 +4,17 @@ import { Link } from "react-router-dom";
 import CartItem from "../components/CartItem";
 import CartEmpty from "../components/CartEmpty";
 
-const Cart = () => {
+export type Item = {
+  id: number;
+  title: string;
+  price: number;
+  count: number;
+  imageUrl: string;
+  type: number;
+  size: number;
+};
+
+const Cart: React.FC = () => {
   const dispatch = useDispatch();
   const { items, totalPrice, totalCount } = useSelector(selectCart);
 
@@ -99,7 +109,7 @@ const Cart = () => {
           </div>
         </div>
         <div className="content__items">
-          {items.map((item) => (
+          {items.map((item: Item) => (
             <CartItem key={item.id} {...item} />
           ))}
         </div>

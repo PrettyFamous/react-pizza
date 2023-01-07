@@ -5,7 +5,7 @@ import { selectPizza } from "../../redux/slices/pizzaSlice";
 
 import styles from "./Pagination.module.scss";
 
-const Pagination = () => {
+const Pagination: React.FC = () => {
   const dispatch = useDispatch();
   const { itemsCount } = useSelector(selectPizza);
   const { itemsPerPage, currentPage } = useSelector(selectFilter);
@@ -20,7 +20,7 @@ const Pagination = () => {
       pageRangeDisplayed={itemsPerPage}
       pageCount={Math.ceil(itemsCount / itemsPerPage)}
       forcePage={currentPage - 1}
-      renderOnZeroPageCount={null}
+      renderOnZeroPageCount={() => null}
     />
   );
 };

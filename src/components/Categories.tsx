@@ -14,11 +14,11 @@ export const categoriesList = [
   "Закрытые",
 ];
 
-const Categories = () => {
+const Categories: React.FC = () => {
   const dispatch = useDispatch();
   const { categoryId } = useSelector(selectFilter);
 
-  const onChangeCategory = (index) => {
+  const onChangeCategory = (index: number) => {
     dispatch(setCategoryId(index));
     dispatch(setCurrentPage(1));
   };
