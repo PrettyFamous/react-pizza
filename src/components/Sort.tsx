@@ -2,17 +2,19 @@ import { useRef } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setSort, setOrder, selectFilter } from "../redux/slices/filterSlice";
-
-type SortItem = {
-  name: string;
-  sortProperty: string;
-};
+import {
+  setSort,
+  setOrder,
+  selectFilter,
+  SortItem,
+  SortProperty,
+  Order,
+} from "../redux/slices/filterSlice";
 
 export const sortList: SortItem[] = [
-  { name: "популярности", sortProperty: "rating" },
-  { name: "цене", sortProperty: "price" },
-  { name: "алфавиту", sortProperty: "title" },
+  { name: "популярности", sortProperty: SortProperty.RATING },
+  { name: "цене", sortProperty: SortProperty.PRICE },
+  { name: "алфавиту", sortProperty: SortProperty.TITLE },
 ];
 
 export const Sort: React.FC = () => {
@@ -27,9 +29,8 @@ export const Sort: React.FC = () => {
   };
 
   useEffect(() => {
-    // @TODO Сделать нормальный тип
-    const onClickOutOfSort = (event: any) => {
-      if (!event.composedPath().includes(sortRef.current)) {
+    const onClickOutOfSort = (event: MouseEvent) => {
+      if (sortRef.current && !event.composedPath().includes(sortRef.current)) {
         setIsVisible(false);
       }
     };
@@ -44,7 +45,7 @@ export const Sort: React.FC = () => {
       <div className="sort__label">
         {order === "desc" ? (
           <svg
-            onClick={() => dispatch(setOrder("acs"))}
+            onClick={() => dispatch(setOrder(Order.ASCENTIC))}
             width="10"
             height="6"
             viewBox="0 0 10 6"
@@ -58,7 +59,7 @@ export const Sort: React.FC = () => {
           </svg>
         ) : (
           <svg
-            onClick={() => dispatch(setOrder("desc"))}
+            onClick={() => dispatch(setOrder(Order.DESCENDING))}
             width="10"
             height="6"
             viewBox="0 0 10 6"
@@ -73,7 +74,13 @@ export const Sort: React.FC = () => {
         )}
 
         <b
-          onClick={() => dispatch(setOrder(order === "desc" ? "asc" : "desc"))}
+          onClick={() =>
+            dispatch(
+              setOrder(
+                order === Order.DESCENDING ? Order.ASCENTIC : Order.DESCENDING
+              )
+            )
+          }
         >
           Сортировка по:
         </b>
@@ -86,7 +93,11 @@ export const Sort: React.FC = () => {
               <li
                 key={index}
                 onClick={() => onClickListItem(item)}
-                className={sort.sortProperty === index ? "active" : ""}
+                className={
+                  sort.sortProperty === sortList[index].sortProperty
+                    ? "active"
+                    : ""
+                }
               >
                 {item.name}
               </li>

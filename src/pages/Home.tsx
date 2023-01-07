@@ -1,8 +1,12 @@
-import { selectFilter, setFilters } from "../redux/slices/filterSlice";
-import { fetchPizzas, selectPizza } from "../redux/slices/pizzaSlice";
-import { useSelector, useDispatch } from "react-redux";
+import {
+  filterSliceState,
+  selectFilter,
+  setFilters,
+} from "../redux/slices/filterSlice";
+import { fetchPizzas, Pizza, selectPizza } from "../redux/slices/pizzaSlice";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import qs from "qs";
 
 import Sort, { sortList } from "../components/Sort";
@@ -10,10 +14,15 @@ import Categories, { categoriesList } from "../components/Categories";
 import Skeleton from "../components/PizzaBlock/Skeleton";
 import PizzaBlock from "../components/PizzaBlock";
 import Pagination from "../components/Pagination";
+import { useAppDispatch } from "../redux/store";
+
+type LooseObject = {
+  [key: string]: any;
+};
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { items, status } = useSelector(selectPizza);
   const { categoryId, sort, order, itemsPerPage, currentPage, searchValue } =
     useSelector(selectFilter);
@@ -24,18 +33,25 @@ const Home: React.FC = () => {
     if (window.location.search) {
       const params = qs.parse(window.location.search.substring(1));
       const sort = sortList.find((item) => item.sortProperty === params.sortBy);
-      dispatch(setFilters({ ...params, sort }));
+
+      const filters = {
+        currentPage: params.page,
+        itemsPerPage: params.limit,
+        sort: sort ? sort : sortList[0],
+        order,
+        categoryId: params.category,
+        searchValue: params.search,
+      };
+      dispatch(setFilters(filters as unknown as filterSliceState));
     }
   }, []);
 
   useEffect(() => {
-    const querryObject = {
+    const querryObject: LooseObject = {
       page: currentPage,
       limit: itemsPerPage,
       sortBy: sort.sortProperty,
       order,
-      category: null,
-      search: null,
     };
 
     if (categoryId > 0) {
@@ -55,13 +71,12 @@ const Home: React.FC = () => {
     window.scrollTo(0, 0);
 
     if (querryString) {
-      // @ts-ignore
       dispatch(fetchPizzas(querryString));
     }
   }, [querryString]);
 
-  // @TODO Поменять тип с any на нормальный
-  const pizzas = items.map((item: any) => (
+  console.log(items);
+  const pizzas = items.map((item: Pizza) => (
     <PizzaBlock key={item.id} {...item} />
   ));
   const skeletons = [...new Array(4)].map((_, index) => (
