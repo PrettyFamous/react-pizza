@@ -197,6 +197,21 @@ body {
             display: none;
           }
         }
+
+        &:disabled {
+          border-color: darken($color: $gray-line, $amount: 15);
+          opacity: 0.4;
+
+          svg path {
+            fill: darken($color: $gray-line, $amount: 15);
+          }
+
+          &:hover,
+          &:active {
+            border-color: darken($color: $gray-line, $amount: 80);
+            background-color: darken($color: $gray-line, $amount: 80);
+          }
+        }
       }
 
       b {
