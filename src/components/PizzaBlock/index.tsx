@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { addItem, Item, selectCountInCart } from "../../redux/slices/cartSlice";
 
+import "./PizzaBlock.scss";
+
 const typeNames = ["традиционное", "тонкое"];
 
 type PizzaBlockProps = {

@@ -1,10 +1,12 @@
-import { setCurrentPage } from "../redux/slices/filterSlice";
+import { setCurrentPage } from "../../redux/slices/filterSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 
-import logoSvg from "../assets/img/pizza-logo.svg";
-import Search from "./Search";
-import { selectCart } from "../redux/slices/cartSlice";
+import logoSvg from "../../assets/img/pizza-logo.svg";
+import Search from "../Search";
+import { selectCart } from "../../redux/slices/cartSlice";
+
+import "./Header.scss";
 
 const Header: React.FC = () => {
   const dispatch = useDispatch();

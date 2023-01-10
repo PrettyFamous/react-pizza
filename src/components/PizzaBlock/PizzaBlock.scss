@@ -1,4 +1,5 @@
-@import "../variables";
+@import "../../scss/libs/normalize";
+@import "../../scss/variables";
 
 .pizza-block {
   width: 280px;
@@ -11,6 +12,7 @@
   }
 
   &__image {
+    min-height: 260px;
     width: 260px;
     margin-left: 10px;
   }

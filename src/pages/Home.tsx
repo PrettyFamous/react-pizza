@@ -9,9 +9,11 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import qs from "qs";
 
-import Sort, { sortList } from "../components/Sort";
-import Categories, { categoriesList } from "../components/Categories";
-import Skeleton from "../components/PizzaBlock/Skeleton";
+import Sort, { sortList } from "../components/Sort/Sort";
+import Categories, {
+  categoriesList,
+} from "../components/Categories/Categories";
+import Skeleton from "../components/Skeleton";
 import PizzaBlock from "../components/PizzaBlock";
 import Pagination from "../components/Pagination";
 import { useAppDispatch } from "../redux/store";

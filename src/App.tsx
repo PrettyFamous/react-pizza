@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-import Cart from "./pages/Cart";
+import Cart from "./pages/Cart/Cart";
 import NotFound from "./pages/NotFound";
 import PizzaInfo from "./pages/PizzaInfo";
 import MainLayout from "./layouts/MainLayout";

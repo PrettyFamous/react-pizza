@@ -1,5 +1,12 @@
-import { addItem, decItem, Item, removeItem } from "../redux/slices/cartSlice";
+import {
+  addItem,
+  decItem,
+  Item,
+  removeItem,
+} from "../../redux/slices/cartSlice";
 import { useDispatch } from "react-redux";
+
+import "./CartItem.scss";
 
 const sizes = [26, 30, 40];
 

@@ -1,4 +1,4 @@
-@import "../variables";
+@import "../../scss/variables";
 
 .sort {
   position: relative;
@@ -6,7 +6,10 @@
     display: flex;
     align-items: center;
 
-    svg {
+    .arrow--reverted {
+      transform: rotate(180deg);
+    }
+    img {
       margin-right: 8px;
 
       &:hover {

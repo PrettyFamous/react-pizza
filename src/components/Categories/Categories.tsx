@@ -3,7 +3,9 @@ import {
   setCurrentPage,
   setCategoryId,
   selectFilter,
-} from "../redux/slices/filterSlice";
+} from "../../redux/slices/filterSlice";
+
+import "./Categories.scss";
 
 export const categoriesList = [
   "Все",
