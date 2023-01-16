@@ -1,4 +1,6 @@
 # Приложение пиццерии
+Макет: https://www.figma.com/file/h6t4jS6W7JlJ3xGJIthdse/React-Pizza-(Copy)?t=IGHyj4GzH4R5f4XM-0
+
 
 Стек технологий:
 
